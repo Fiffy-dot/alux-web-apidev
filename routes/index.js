@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.use("/members", membersRouter);
 router.use("/books", booksRouter);
+router.use("/borrows", borrowRouter);
 
 
 export default router;
