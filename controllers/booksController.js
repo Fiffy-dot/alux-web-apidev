@@ -31,7 +31,7 @@ export async function createBook(req, res) {
 
 export async function viewAllBooks(req, res) {
     try {
-        let allbooks = await Book.findAll();
+        let allbooks = await Books.findAll();
         if (allbooks) {
             res.json({
                 success: true,
@@ -82,19 +82,23 @@ export async function viewBook(req, res) {
 // edit a book
 export async function editBook(req, res) {
     try{
-       let book = await Book.findAll({where: {book_id: req.params.id}});
+       let book = await Books.findAll({where: {book_id: req.params.id}});
        if (book) {
-           await Book.update(req.body, {where : {book_id: req.params.id}})
-                   res.json({
-                       success: true, 
-                       message: `Book details updated succusfully`
-                   })
+           await Books.update(req.body, {where : {book_id: req.params.id}})
+           .then(res_flag => {
+               if (res_flag == 1){
+                res.json({
+                    success: true, 
+                    message: `Book details updated succusfully`
+                })
                } else {
-                   res.json({
-                       success: false, 
-                       message: `Book details were not updated`
-                   })
-               }
+                res.json({
+                    success: false, 
+                    message: `Book details were not updated`
+                })
+            }
+           })
+        } 
    } catch (err) {
        console.log(err);
        res.status(500).json({
@@ -107,9 +111,11 @@ export async function editBook(req, res) {
 // delete a book record
 export async function deleteBook(req, res) {
     try{
-        let book = await Book.findAll({where: {book_id: req.params.id}});
+        let book = await Books.findAll({where: {book_id: req.params.id}});
         if (book) {
-            await book.filter({where : {book_id: req.params.id}})
+            await Books.destroy({where : {book_id: req.params.id}})
+            .then(res_flag => {
+                if (res_flag == 1){
                     res.json({
                         success: true, 
                         message: `Book was deleted succusfully`
@@ -120,8 +126,9 @@ export async function deleteBook(req, res) {
                         message: `Book was not deleted`
                     })
                 }
+            })
         }
-    catch (err) {
+    } catch (err) {
         console.log(err);
         res.status(500).json({
             success: false,
