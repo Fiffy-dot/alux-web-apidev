@@ -1,8 +1,18 @@
 import Borrows from "../models/borrows.model.js";
+import Books from "../models/books.model.js";
 
 // borrow a book
 export async function borrowBook(req, res){
     try {
+        let book = await Books.findAll({where: {title: req.body.book_borrowed}});
+        if (!book){
+            res.status(500).json({
+                success: false,
+                message: "The book is not in our collection"
+            })
+            return;
+        }
+
         let book_borrow = await Borrows.create(req.body);
         if (book_borrow) {
             res.status(200).json({
