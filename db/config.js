@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-dotenv.config()
+dotenv.config();
 
 const dbConfig = {
     HOST: process.env.DB_HOST,
@@ -15,5 +15,7 @@ const dbConfig = {
         idle: 10000
     }
 }
+
+console.log("DB_Name: ", process.env.DB_HOST);
 
 export default dbConfig;
