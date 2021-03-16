@@ -31,7 +31,7 @@ export async function createBook(req, res) {
 
 export async function viewAllBooks(req, res) {
     try {
-        let allbooks = await Book.findAll();
+        let allbooks = await Books.findAll();
         if (allbooks) {
             res.json({
                 success: true,
@@ -82,7 +82,7 @@ export async function viewBook(req, res) {
 // edit a book
 export async function editBook(req, res) {
     try{
-       let book = await Book.findAll({where: {book_id: req.params.id}});
+       let book = await Books.findAll({where: {book_id: req.params.id}});
        if (book) {
            await Book.update(req.body, {where : {book_id: req.params.id}})
                    res.json({
@@ -107,7 +107,7 @@ export async function editBook(req, res) {
 // delete a book record
 export async function deleteBook(req, res) {
     try{
-        let book = await Book.findAll({where: {book_id: req.params.id}});
+        let book = await Books.findAll({where: {book_id: req.params.id}});
         if (book) {
             await book.filter({where : {book_id: req.params.id}})
                     res.json({
