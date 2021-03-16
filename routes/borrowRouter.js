@@ -1,21 +1,21 @@
 import express from "express";
-import { borrowBook,returnBook,viewAllBorrowed,viewOneBorrowed,viewMemberBorrowed } from '../controllers/borrowingController'
+import { borrowBook,returnBook,viewAllBorrowed,viewOneBorrowed,viewMemberBorrowed } from '../controllers/borrowingController.js'
 
-const membersRouter = express.Router();
+const borrowRouter = express.Router();
 
 //Borrow a book
 borrowRouter.post("/",  borrowBook);
 
 //Return a book
-borrowRouter.get("/:id",  returnBook);
+borrowRouter.delete("/:id",  returnBook);
 
 //View all borrowed books
 borrowRouter.get("/",  viewAllBorrowed);
 
 //View a particular book
-borrowRouter.put("/",  viewOneBorrowed);
+borrowRouter.get("/:id",  viewOneBorrowed);
 
 //View all borrowings of a particular member
-borrowRouter.delete("/:id",  viewMemberBorrowed);
+borrowRouter.get("/user/:member_name",  viewMemberBorrowed);
 
 export default borrowRouter;

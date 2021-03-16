@@ -1,4 +1,5 @@
-const Sequelize = require('sequelize');
+import Sequelize from "sequelize";
+import { sequelize } from "../db/dbConnect.js";
 
 const Borrows = sequelize.define('member', {
   id: {
@@ -15,7 +16,7 @@ const Borrows = sequelize.define('member', {
     type: Sequelize.STRING(255),
     allowNull: false
   },
-  borrowed_date: {
+  date_borrowed: {
     type: Sequelize.DATEONLY,
     allowNull: false
   },

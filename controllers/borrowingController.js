@@ -1,22 +1,19 @@
 import Borrows from "../models/borrows.model.js";
-import Books from "../models/books.model.js";
-
 
 // borrow a book
-export async function borrowBook(req, res) {
+export async function borrowBook(req, res){
     try {
-        let allbooks = await Books.findAll({where: {book_id: req.params.id}});
-        if (allbooks) {
-            await Borrows.create(req.body)
-            res.json({
+        let book_borrow = await Borrows.create(req.body);
+        if (book_borrow) {
+            res.status(200).json({
                 success: true,
-                message: 'Book borrowed successfully',
-                data: allbooks
+                message: 'book borrowed successfully',
+                data: book_borrow
             })
         } else {
-            res.json({
+            res.status(200).json({
                 success: true,
-                message: 'No such book was found.',
+                message: 'book could not be created at this time'
             })
         }
     } catch (err) {
@@ -28,20 +25,24 @@ export async function borrowBook(req, res) {
     }
 }
 
-// return a book
+//return a book
 export async function returnBook(req, res) {
-    try {
-        let allbooks = await Borrows.findAll({where: {members_id: req.params.id}});
-        if (allbooks) {
-            res.json({
-                success: true,
-                message: 'Book returned successfully',
-                data: allmembers
-            })
-        } else {
-            res.json({
-                success: true,
-                message: 'No Member details found.',
+    try{
+        let book = await Borrows.findAll({where: {id: req.params.id}});
+        if (book) {
+            await Borrows.destroy({where : {id: req.params.id}})
+            .then(res_flag => {
+                if (res_flag == 1){
+                    res.json({
+                        success: true, 
+                        message: `Book returned successfully`
+                    })
+                } else {
+                    res.json({
+                        success: false, 
+                        message: `Book was not returned successfully`
+                    })
+                }
             })
         }
     } catch (err) {
@@ -52,6 +53,8 @@ export async function returnBook(req, res) {
         })
     }
 }
+
+
 // view all borrowed books
 export async function viewAllBorrowed(req, res) {
     try {
@@ -76,10 +79,11 @@ export async function viewAllBorrowed(req, res) {
         })
     }
 }
+
 // view a particular borrowing
 export async function viewOneBorrowed(req, res) {
     try {
-        let allmembers = await Borrows.findAll({where: {member_id: req.params.id}});
+        let allmembers = await Borrows.findAll({where: {id: req.params.id}});
         if (allmembers) {
             res.json({
                 success: true,
@@ -104,7 +108,8 @@ export async function viewOneBorrowed(req, res) {
 // view all borrowings of a particular member
 export async function viewMemberBorrowed(req, res) {
     try {
-        let allmembers = await Borrows.findAll({where: {member_id: req.params.id}});
+        let allmembers = await Borrows.findAll({where: {member_name: req.params.member_name}});
+        console.log("view =====> ", req.params.member_name);
         if (allmembers) {
             res.json({
                 success: true,
