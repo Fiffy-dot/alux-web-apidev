@@ -1,6 +1,8 @@
 import Sequelize from "sequelize";
 import dbConfig from "./config.js";
 
+console.log(dbConfig.PASSWORD);
+
 export const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
@@ -15,8 +17,8 @@ export const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASS
 
 sequelize.authenticate()
     .then(() => {
-        console.log("Connection Successful");
+        console.log(">>> Connection Successful");
     })
     .catch(err => {
-        console.log("Connection Failed:", err);
+        console.log(">>> Connection Failed:", err);
     });

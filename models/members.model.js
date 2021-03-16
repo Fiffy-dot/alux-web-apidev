@@ -38,7 +38,7 @@ const Member = sequelize.define('member', {
     }
 }, {
     sequelize,
-    tableName: 'members',
+    tableName: 'member',
     timestamps: false,
     indexes: [{
         name: "PRIMARY",
